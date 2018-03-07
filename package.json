@@ -1,0 +1,25 @@
+{
+  "name": "webgl2",
+  "version": "1.0.0",
+  "description": "Webgl 2.0 interface",
+  "main": "webgl2.js",
+  "scripts": {
+    "build": "webpack",
+    "dist": "webpack -p --colors --display-modules --display-error-details",
+    "start": "webpack-dev-server --colors --open --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alejandro Corsino",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "clean-webpack-plugin": "^0.1.18",
+    "gulp": "^3.9.1",
+    "raw-loader": "^0.5.1",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.9",
+    "webpack-dev-server": "^3.1.0"
+  }
+}
