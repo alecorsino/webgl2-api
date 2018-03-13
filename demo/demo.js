@@ -12,25 +12,17 @@ document.addEventListener("DOMContentLoaded",
 
   // window.wgl = screen;
 
-  let m1 = new Flick.Model(screen.gl);
-  m1.setProgram(programDefault);
   let cubeMesh = Flick.WavefrontParser.parse(cube);
-  let planeMesh = Flick.WavefrontParser.parse(plane);
-  m1.verticesData = cubeMesh.vertices;
-  m1.indicesData = cubeMesh.indices;
-  m1.setupBuffers();
-
+  let m1 = new Flick.Model(screen.gl, cubeMesh);
+  m1.setProgram(programDefault);
+  
   m1.transform([0,0,0], 0, [0,0,0], [1,1,1]);
   
-  let m2 = new Flick.Model(screen.gl);
+  let planeMesh = Flick.WavefrontParser.parse(plane);
+  let m2 = new Flick.Model(screen.gl, planeMesh);
   
   m2.setProgram(programCustom);
-  
-  m2.verticesData = planeMesh.vertices;
-  m2.indicesData = planeMesh.indices;
   m2.transform([0,0,0], 0, [0,0,0], [4,1,4]);
-  
-  m2.setupBuffers();
   
   let stage = new Flick.Stage();
   stage.addModel(m2);
@@ -52,6 +44,7 @@ document.addEventListener("DOMContentLoaded",
 let x = 0;
 let r = 10; 
 let prevFrame = performance.now();
+
 const draw = (timestamp)=>{
    // console.log('[INTERVAL]',x);
   if((timestamp - prevFrame) >16){
@@ -65,7 +58,10 @@ const draw = (timestamp)=>{
    
 }
 requestAnimationFrame(draw)
-
+  Flick.WebLoader.load('meadow.jpg', 'MyLandscape');
+  if (Flick.WebLoader.ready()){
+    Flick.WebLoader.getAsset('MyLandscape')
+  }
 //   document.addEventListener("mousemove", function( event ) {
 //     // store a ref. on the dragged elem
 //     dragged = event;
