@@ -57,7 +57,7 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: ['node_modules']
+    modules: ['node_modules','lib']
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()

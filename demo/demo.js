@@ -8,9 +8,8 @@ document.addEventListener("DOMContentLoaded",
   
   let programCustom = new Flick.ShaderProgram(vsCode, fsCode, screen.gl);
   let programDefault = new Flick.ShaderProgram(Flick.DefaultVertexShader, Flick.DefaultFragmentShader, screen.gl);
-  console.log('[FLICK - WebGL2]',programCustom)
 
-  // window.wgl = screen;
+  window._gl = screen;
 
   let cubeMesh = Flick.WavefrontParser.parse(cube);
   let m1 = new Flick.Model(screen.gl, cubeMesh);
@@ -49,8 +48,10 @@ const draw = (timestamp)=>{
    // console.log('[INTERVAL]',x);
   if((timestamp - prevFrame) >16){
     prevFrame = timestamp;
-    x+=.01;
-   screen.lookAt(r * Math.cos(x),r, r * Math.sin(x));
+    x+=1; (x===360)&& (x=0)
+    
+    m1.transform([0,1,0], x, [0,0,0], [1,1,1]);
+  //  screen.lookAt(r * Math.cos(x),r, r * Math.sin(x));
   //  screen.lookAt(r,r * Math.sin(x), r * Math.cos(x));
    screen.render(stage)
   }
@@ -58,10 +59,11 @@ const draw = (timestamp)=>{
    
 }
 requestAnimationFrame(draw)
-  Flick.WebLoader.load('meadow.jpg', 'MyLandscape');
-  if (Flick.WebLoader.ready()){
-    Flick.WebLoader.getAsset('MyLandscape')
-  }
+  Flick.WebLoader.load('meadow.jpg', 'MyLandscape')
+  .then(res =>{
+    
+    console.log('[RES]',Flick.WebLoader.getAsset('MyLandscape'))
+  });
 //   document.addEventListener("mousemove", function( event ) {
 //     // store a ref. on the dragged elem
 //     dragged = event;
