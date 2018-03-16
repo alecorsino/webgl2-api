@@ -9,26 +9,14 @@ document.addEventListener("DOMContentLoaded",
   let programCustom = new Flick.ShaderProgram(vsCode, fsCode, screen.gl);
   let programDefault = new Flick.ShaderProgram(Flick.DefaultVertexShader, Flick.DefaultFragmentShader, screen.gl);
 
-  window._gl = screen;
-
-  let cubeMesh = Flick.WavefrontParser.parse(cube);
-  let m1 = new Flick.Model(screen.gl, cubeMesh);
-  m1.setProgram(programDefault);
-  
-  m1.transform([0,0,0], 0, [0,0,0], [1,1,1]);
-  
-  let planeMesh = Flick.WavefrontParser.parse(plane);
-  let m2 = new Flick.Model(screen.gl, planeMesh);
-  
-  m2.setProgram(programCustom);
-  m2.transform([0,0,0], 0, [0,0,0], [4,1,4]);
-  
+  let cubeMesh;
+  let m1, m2;
   let stage = new Flick.Stage();
-  stage.addModel(m2);
-  stage.addModel(m1);
+
+  
+
   // screen.setSize(window.innerWidth, window.innerHeight);
-  screen.init();
-  screen.render(stage)
+ 
 
   c.addEventListener("mousemove", function( event ) {
     // store a ref. on the dragged elem
@@ -44,26 +32,68 @@ let x = 0;
 let r = 10; 
 let prevFrame = performance.now();
 
-const draw = (timestamp)=>{
-   // console.log('[INTERVAL]',x);
-  if((timestamp - prevFrame) >16){
-    prevFrame = timestamp;
-    x+=1; (x===360)&& (x=0)
-    
-    m1.transform([0,1,0], x, [0,0,0], [1,1,1]);
-  //  screen.lookAt(r * Math.cos(x),r, r * Math.sin(x));
-  //  screen.lookAt(r,r * Math.sin(x), r * Math.cos(x));
-   screen.render(stage)
+//TESTING WAVEFRONT
+// Flick.WebLoader.loadMesh('waveTest.obj', 'wTest')
+//   .then(res =>{
+//         let wTest = Flick.WebLoader.getAsset('wTest')
+//         cubeMesh = Flick.WavefrontParser.parse(wTest.data);
+//   })
+
+Flick.WebLoader.onReady( ()=>{
+  console.log('[STARTING SCREEN]');
+  
+    screen.init();
+    screen.render(stage)
+    const draw = (timestamp)=>{
+      // console.log('[INTERVAL]',x);
+    if((timestamp - prevFrame) >16){
+      prevFrame = timestamp;
+      x+=1; (x===360)&& (x=0)
+      
+      m1.transform([0,1,0], x, [0,1,0], [1,1,1]);
+    //  screen.lookAt(r * Math.cos(x),r, r * Math.sin(x));
+    //  screen.lookAt(r,r * Math.sin(x), r * Math.cos(x));
+      screen.render(stage)
+    }
+    requestAnimationFrame(draw)
+      
   }
+  
   requestAnimationFrame(draw)
-   
-}
-requestAnimationFrame(draw)
-  Flick.WebLoader.load('meadow.jpg', 'MyLandscape')
+});
+
+Flick.WebLoader.loadMesh('cube.obj', 'cube')
   .then(res =>{
-    
-    console.log('[RES]',Flick.WebLoader.getAsset('MyLandscape'))
-  });
+        let cubeObj = Flick.WebLoader.getAsset('cube')
+        cubeMesh = Flick.WavefrontParser.parse(cubeObj.data);
+        
+        m1 = new Flick.Model(screen.gl, cubeMesh);
+        m1.setProgram(programDefault);
+        
+        m1.transform([0,0,0], 0, [0,0,0], [1,1,1]);
+        stage.addModel(m1);
+      });
+      
+      window._gl = screen;
+      
+      Flick.WebLoader.loadMesh('plane.obj', 'plane')
+      .then(res =>{
+        let planeObj = Flick.WebLoader.getAsset('plane');
+        let planeMesh = Flick.WavefrontParser.parse(planeObj.data);
+       m2 = new Flick.Model(screen.gl, planeMesh);
+      
+      m2.setProgram(programCustom);
+      m2.transform([0,0,0], 0, [0,0,0], [4,1,4]);
+      
+      stage.addModel(m2);
+});
+Flick.WebLoader.loadImage('meadow.jpg', 'MyLandscape')
+.then(res =>{
+  
+  // console.log('[RES]',Flick.WebLoader.getAsset('MyLandscape'))
+});
+
+ 
 //   document.addEventListener("mousemove", function( event ) {
 //     // store a ref. on the dragged elem
 //     dragged = event;
