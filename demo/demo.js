@@ -41,16 +41,40 @@ let prevFrame = performance.now();
 
 Flick.WebLoader.onReady( ()=>{
   console.log('[STARTING SCREEN]');
+  screen.lookAt(10,10,10);
+  let cubeObj = Flick.WebLoader.getAsset('cube')
+  cubeMesh = Flick.WavefrontParser.parse(cubeObj.data);
+  let tex = Flick.WebLoader.getAsset('MyLandscape')
+  console.log('[TEXTURE]', tex); 
+  cubeMesh.texture = tex.image;
+  m1 = new Flick.Model(screen.gl, cubeMesh);
   
+  
+  
+  m1.setProgram(programDefault);
+  
+  // m1.transform([0,0,0], 0, [0,0,0], [10,10,10]);
+  stage.addModel(m1);
+
+  let planeObj = Flick.WebLoader.getAsset('plane');
+  let planeMesh = Flick.WavefrontParser.parse(planeObj.data);
+ 
+ 
+  m2 = new Flick.Model(screen.gl, planeMesh);
+
+m2.setProgram(programCustom);
+m2.transform([0,0,0], 0, [0,0,0], [4,1,4]);
+
+stage.addModel(m2);
     screen.init();
     screen.render(stage)
-    const draw = (timestamp)=>{
+const draw = (timestamp)=>{
       // console.log('[INTERVAL]',x);
     if((timestamp - prevFrame) >16){
       prevFrame = timestamp;
       x+=1; (x===360)&& (x=0)
       
-      m1.transform([0,1,0], x, [0,1,0], [1,1,1]);
+      m1.transform([0,1,0], x, [0,2,0], [2,2,2]);
     //  screen.lookAt(r * Math.cos(x),r, r * Math.sin(x));
     //  screen.lookAt(r,r * Math.sin(x), r * Math.cos(x));
       screen.render(stage)
@@ -62,36 +86,15 @@ Flick.WebLoader.onReady( ()=>{
   requestAnimationFrame(draw)
 });
 
-Flick.WebLoader.loadMesh('cube.obj', 'cube')
-  .then(res =>{
-        let cubeObj = Flick.WebLoader.getAsset('cube')
-        cubeMesh = Flick.WavefrontParser.parse(cubeObj.data);
-        
-        m1 = new Flick.Model(screen.gl, cubeMesh);
-        m1.setProgram(programDefault);
-        
-        m1.transform([0,0,0], 0, [0,0,0], [1,1,1]);
-        stage.addModel(m1);
-      });
-      
-      window._gl = screen;
-      
-      Flick.WebLoader.loadMesh('plane.obj', 'plane')
-      .then(res =>{
-        let planeObj = Flick.WebLoader.getAsset('plane');
-        let planeMesh = Flick.WavefrontParser.parse(planeObj.data);
-       m2 = new Flick.Model(screen.gl, planeMesh);
-      
-      m2.setProgram(programCustom);
-      m2.transform([0,0,0], 0, [0,0,0], [4,1,4]);
-      
-      stage.addModel(m2);
-});
-Flick.WebLoader.loadImage('meadow.jpg', 'MyLandscape')
-.then(res =>{
+Flick.WebLoader.loadImage('meadow.jpg', 'MyLandscape');
+
+
+Flick.WebLoader.loadMesh('cube.obj', 'cube');
   
-  // console.log('[RES]',Flick.WebLoader.getAsset('MyLandscape'))
-});
+      
+Flick.WebLoader.loadMesh('plane.obj', 'plane');
+     
+
 
  
 //   document.addEventListener("mousemove", function( event ) {
