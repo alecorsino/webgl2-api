@@ -18,15 +18,15 @@ document.addEventListener("DOMContentLoaded",
   // screen.setSize(window.innerWidth, window.innerHeight);
  
 
-  c.addEventListener("mousemove", function( event ) {
-    // store a ref. on the dragged elem
-    let x = event.screenX;
-    let y = event.screenY;
-    // console.log('[MOUSE]', x,':',y);
-    // m1.transform([0,0,0], 0, [x/100,-y/100,0], [1,1,1]);
-    // screen.lookAt(Math.sin(x/100),10, Math.cos(y/100));
-    // screen.render(stage)
-}, false);
+//   c.addEventListener("mousemove", function( event ) {
+//     // store a ref. on the dragged elem
+//     let x = event.screenX;
+//     let y = event.screenY;
+//     // console.log('[MOUSE]', x,':',y);
+//     m1.transform([0,0,0], 0, [x/100,-y/100,0], [1,1,1]);
+//     screen.lookAt(x/100,10,y/100);
+//     // screen.render(stage)
+// }, false);
 
 let x = 0;
 let r = 10; 

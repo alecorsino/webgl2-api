@@ -6,14 +6,25 @@ precision mediump float;
  
 // we need to declare an output for the fragment shader
 in vec2 v_texCoord;
+in vec3 v_normal;
+
 out vec4 outColor;
+ 
+uniform vec3 u_reverseLightDirection;
+uniform vec4 u_color;
 
 uniform sampler2D u_texture;
-uniform vec4 ourColor;
  
 void main() {
   // Just set the output to a constant redish-purple
   // outColor = vec4(1, 0, 0.5, 1);
-  // outColor = ourColor;
   outColor = texture(u_texture, v_texCoord);
+
+  vec3 normal = normalize(v_normal);
+ 
+  float light = dot(normal, u_reverseLightDirection);
+ 
+  // outColor = u_color;
+ 
+  outColor.rgb *= light ;
 }
